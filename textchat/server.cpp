@@ -31,8 +31,8 @@ void server2() {
 
 	//collect ports n stuff
 	cout << "Enter your own port information." << endl;
-	int port = 80;// getPort();
-	string address = "175.159.92.178";// getAddress();
+	int port = getPort();
+	string address = getAddress();
 
 	
 	

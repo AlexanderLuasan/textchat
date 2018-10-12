@@ -28,8 +28,8 @@ void client()
 
 	// where to connect 
 	cout << "Enter your target's port information." << endl;
-	int port = 80;//getPort();
-	string address = "175.159.92.178";//getAddress();
+	int port = getPort();
+	string address = getAddress();
 
 	//make address 
 	sockaddr_in host;
