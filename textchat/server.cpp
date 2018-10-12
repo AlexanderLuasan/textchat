@@ -10,10 +10,6 @@ using namespace std;
 
 
 void server2() {
-
-
-
-
 	WSADATA wsData;//initialize winsock
 	WORD ver = MAKEWORD(2, 2);
 
@@ -93,6 +89,55 @@ void server2() {
 	//shutdown winsock
 	WSACleanup();
 
+}
+
+int serverOpen(SOCKET * ClientSocket, sockaddr_in * client, int size)
+{
+	WSADATA wsData;//initialize winsock
+	WORD ver = MAKEWORD(2, 2);
+
+	int wsOK = WSAStartup(ver, &wsData);
+	if (wsOK != 0) {
+		cout << "fail to setup" << endl;
+		return 1;
+	}
+	//ceate socket
+	SOCKET listening = socket(AF_INET, SOCK_STREAM, 0);
+	if (listening == INVALID_SOCKET) {
+		cout << "no socket" << endl;
+		return 1;
+	}
+
+	//collect ports n stuff
+	cout << "Enter your own port information." << endl;
+	int port = getPort();
+	string address = getAddress();
+
+
+
+	//bind socket
+	sockaddr_in hint;
+	hint.sin_family = AF_INET;
+	hint.sin_port = htons(port);
+	inet_pton(AF_INET, address.c_str(), &(hint.sin_addr.S_un.S_addr));
+	bind(listening, (sockaddr*)&hint, sizeof(hint));
+
+	cout << "wait for connection" << endl;
+	listen(listening, SOMAXCONN);
+
+
+
+	
+
+	*ClientSocket = accept(listening, (sockaddr*)&client, &size);
+	if (*ClientSocket == INVALID_SOCKET) {
+		cout << "failed connecting socket" << endl;
+		return 1;
+	}
+	cout << "connected" << endl;
+
+
+	return 0;
 }
 
 void server()
