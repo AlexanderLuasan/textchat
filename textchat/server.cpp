@@ -2,14 +2,15 @@
 #include <iostream>
 #include <WinSock2.h>
 #include <WS2tcpip.h>
-
-
+#include "chatfunc.h"
+#include <string>
 #pragma comment(lib,"ws2_32.lib")
 
 using namespace std;
 
 
 void server2() {
+
 
 
 
@@ -27,23 +28,28 @@ void server2() {
 		cout << "no socket" << endl;
 		return;
 	}
+
 	//collect ports n stuff
-	int port = 80;
-	char address[] = "203.188.81.76";
+	cout << "Enter your own port information." << endl;
+	int port = 80;// getPort();
+	string address = "175.159.92.178";// getAddress();
 
-
-
+	
+	
 	//bind socket
 	sockaddr_in hint;
 	hint.sin_family = AF_INET;
 	hint.sin_port = htons(port);
-	inet_pton(AF_INET, address, &(hint.sin_addr.S_un.S_addr));
+	inet_pton(AF_INET, address.c_str(), &(hint.sin_addr.S_un.S_addr));
 	bind(listening, (sockaddr*)&hint, sizeof(hint));
 
 	cout << "wait for connection" << endl;
 	listen(listening, SOMAXCONN);
+
 	sockaddr_in client;
+
 	int clientSize = sizeof(client);
+
 	SOCKET ClientSocket = accept(listening, (sockaddr*)&client, &clientSize);
 	if (ClientSocket == INVALID_SOCKET) {
 		cout << "failed connecting socket" << endl;

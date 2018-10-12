@@ -2,6 +2,8 @@
 #include <iostream>
 #include <WinSock2.h>
 #include <WS2tcpip.h>
+#include <string>
+#include "chatfunc.h"
 #pragma comment(lib,"ws2_32.lib")
 
 using namespace std;
@@ -25,14 +27,15 @@ void client()
 	}
 
 	// where to connect 
-	int port = 80;
-	char address[] = "203.188.81.76";
+	cout << "Enter your target's port information." << endl;
+	int port = 80;//getPort();
+	string address = "175.159.92.178";//getAddress();
 
 	//make address 
 	sockaddr_in host;
 	host.sin_family = AF_INET;
 	host.sin_port = htons(port);
-	inet_pton(AF_INET, address, &(host.sin_addr.S_un.S_addr));
+	inet_pton(AF_INET, address.c_str(), &(host.sin_addr.S_un.S_addr));
 
 	//my socket
 

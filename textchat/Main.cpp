@@ -3,14 +3,16 @@
 #include <WS2tcpip.h>
 #include "server.h"
 #include "client.h"
+#include "chatfunc.h"
 
 using namespace std;
 int main() {
 	cout << "Text chat start" << endl;
 
 	cout << "server  or client" << endl;
-	int choice;
-	cin >> choice;
+	int choice = stoi(getUser());
+
+
 
 	if (choice == 0) {
 		server2();

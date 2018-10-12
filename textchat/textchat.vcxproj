@@ -115,11 +115,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="chatfunc.cpp" />
     <ClCompile Include="client.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="server.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="chatfunc.h" />
     <ClInclude Include="client.h" />
     <ClInclude Include="server.h" />
   </ItemGroup>
