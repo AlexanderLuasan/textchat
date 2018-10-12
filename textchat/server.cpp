@@ -77,16 +77,17 @@ void server2() {
 
 	int bitsrecved;
 	char data[4096];
+	string mess;
 	while (true) {
 		ZeroMemory(data, 4096);
 		bitsrecved = recv(ClientSocket, data, 4096, 0);
-		cout << data << endl;
+		cout << ">>" <<data << endl;
 		if (data[0] == 'q') {
 			break;
 		}
-		//send a message
-
-		send(ClientSocket, data, bitsrecved + 1, 0);
+		cout << "<<" << flush;
+		mess = getUser();
+		send(ClientSocket, mess.c_str(), mess.length(), 0);
 	}
 	closesocket(ClientSocket);
 	//shutdown winsock

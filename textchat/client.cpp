@@ -49,12 +49,12 @@ void client()
 	char data[4096];
 	string mess;
 	while (true) {
-		cout << "what would you like to send: " << flush;
+		cout << "<<" << flush;
 		mess = getUser();
 		send(reciving, mess.c_str(), mess.length(), 0);
 		ZeroMemory(data, 4096);
 		recv(reciving, data, 4096, 0);
-		cout << data << endl;
+		cout << ">>" <<data << endl;
 
 
 	}
