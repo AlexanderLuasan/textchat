@@ -46,11 +46,17 @@ void client()
 	cout << "connected" << endl;
 
 
-	char mess[] = "hello";
-	send(reciving, mess, 6, 0);
-	char data[100];
-	recv(reciving, data, 100, 0);
-	cout << data << endl;
+	char data[4096];
+	string mess;
+	while (true) {
+		cout << "what would you like to send: " << flush;
+		mess = getUser();
+		send(reciving, mess.c_str(), mess.length(), 0);
+		ZeroMemory(data, 4096);
+		recv(reciving, data, 4096, 0);
+		cout << data << endl;
 
+
+	}
 
 }

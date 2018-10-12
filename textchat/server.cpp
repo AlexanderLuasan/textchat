@@ -74,14 +74,20 @@ void server2() {
 	}
 
 	//recive a message
-	char data[100];
-	recv(ClientSocket,data,100,0);
-	cout << data << endl;
 
-	//send a message
-	char welcome[] = "hello world";
-	send(ClientSocket,welcome,12*8,0);
+	int bitsrecved;
+	char data[4096];
+	while (true) {
+		ZeroMemory(data, 4096);
+		bitsrecved = recv(ClientSocket, data, 4096, 0);
+		cout << data << endl;
+		if (data[0] == 'q') {
+			break;
+		}
+		//send a message
 
+		send(ClientSocket, data, bitsrecved + 1, 0);
+	}
 	closesocket(ClientSocket);
 	//shutdown winsock
 	WSACleanup();
