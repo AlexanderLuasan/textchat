@@ -1,8 +1,6 @@
 #pragma once
 #include <WS2tcpip.h>
-
-
-int serverOpen(SOCKET *partner, sockaddr_in *partneradd, int size);
+#include <string>
+using namespace std;
+int serverOpen(SOCKET *partner, sockaddr_in *partneradd, int size, int port, string address);
 void server();
-
-void server2();

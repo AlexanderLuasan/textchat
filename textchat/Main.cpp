@@ -21,7 +21,11 @@ int main() {
 	sockaddr_in partnerdata;
 	int size = sizeof(partnerdata);
 	if (choice == 0) {
-		serverOpen(&partner,&partnerdata,size);
+		//collect ports n stuff
+		cout << "Enter your own port information." << endl;
+		int port = getPort();
+		string address = getAddress();
+		serverOpen(&partner,&partnerdata,size, port, address);
 		if (getnameinfo((sockaddr*)&partnerdata, sizeof(partnerdata), host, NI_MAXHOST, service, NI_MAXSERV, 0) == 0) {
 			cout << host << " connected on port " << service << endl;
 		}
@@ -32,7 +36,10 @@ int main() {
 
 	}
 	else {
-		clinetJoin(&partner, &partnerdata, size);
+		cout << "Enter your target's port information." << endl;
+		int port = getPort();
+		string address = getAddress();
+		clinetJoin(&partner, &partnerdata, size, port, address);
 		if (getnameinfo((sockaddr*)&partnerdata, sizeof(partnerdata), host, NI_MAXHOST, service, NI_MAXSERV, 0) == 0) {
 			cout << host << " connected on port " << service << endl;
 		}
