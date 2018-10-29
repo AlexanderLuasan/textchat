@@ -48,7 +48,7 @@ int serverOpen(SOCKET * ClientSocket, sockaddr_in * client, int size, int port, 
 		return 1;
 	}
 	cout << "connected" << endl;
-
+	closesocket(listening);
 
 	return 0;
 }
