@@ -66,7 +66,7 @@ int main() {
 
 		future<int> sending = async(&sendfunc, sockets);
 		future<int> reciving = async(&recfunc, sockets);
-		
+		cout << flush;
 		while (true) {
 			
 			
@@ -79,14 +79,30 @@ int main() {
 			}
 			auto status2 = reciving.wait_for(0ms);
 			if (status2 == future_status::ready) {
-				reciving = async(&recfunc, sockets);
+				int out = reciving.get();
+				if (out == -1) {
+					send(sockets.fd_array[0], "!q", 3, 0);
+					cout << "your partner has left. Enter to continue.";
+					break;
+				}
+				else {
+					reciving = async(&recfunc, sockets);
+				}
 			}
 			else {
 
 			}
 		}
-
+		
 		closesocket(partner);
+		sending.wait();
+		cout << "Would you like to continue chating? y/(n): ";
+		string exitc;
+		exitc = getUser();
+		if (exitc.compare("y")!=0) {
+			chating = false;
+		}
+
 	}
 	system("pause");
 	return 0;
@@ -115,6 +131,9 @@ int recfunc(fd_set sockets) {
 	bitsrecved = recv(sockets.fd_array[0], data, 400, 0);
 	if (bitsrecved == 0) {
 		cout << "quitting" << endl;
+		return -1;
+	}
+	else if (data[0]=='!' && data[1] == 'q') {
 		return -1;
 	}
 	else {
