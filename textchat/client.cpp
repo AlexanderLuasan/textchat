@@ -25,12 +25,11 @@ int clinetJoin(SOCKET * partner, sockaddr_in * partneradd, int size, int port, s
 		return 1;
 	}
 
-	
-
-	
 	partneradd->sin_family = AF_INET;
 	partneradd->sin_port = htons(port);
 	inet_pton(AF_INET, address.c_str(), &(partneradd->sin_addr.S_un.S_addr));
+
+
 	if (connect(*partner, (sockaddr*)partneradd, size) != 0) {
 		cout << "connection error" << endl;
 		return 1;

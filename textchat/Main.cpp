@@ -14,6 +14,19 @@ int main() {
 	cout << "Text chat start" << endl;
 	bool chating = true;
 	while (chating) {
+
+		char host[NI_MAXHOST]; // name
+		char service[NI_MAXHOST]; // port
+		ZeroMemory(host, NI_MAXHOST);
+		ZeroMemory(service, NI_MAXHOST);
+		SOCKET partner;
+		sockaddr_in partnerdata;
+		int size = sizeof(partnerdata);
+
+		timeval timeout;
+		fd_set sockets;
+		timeout.tv_sec = 0;
+
 		int choice;
 		cout << "server or client" << endl;
 		string in= getUser();
@@ -27,27 +40,15 @@ int main() {
 			continue;
 		}
 
-
-		char host[NI_MAXHOST]; // name
-		char service[NI_MAXHOST]; // port
-		ZeroMemory(host, NI_MAXHOST);
-		ZeroMemory(service, NI_MAXHOST);
-		SOCKET partner;
-		sockaddr_in partnerdata;
-		int size = sizeof(partnerdata);
-
-		timeval timeout;
-		fd_set sockets;
-		timeout.tv_sec=0;
 		if (choice == 0) {
 			//collect ports n stuff
-			cout << "Enter your own port information." << endl;
+			cout << "Enter your own information." << endl;
 			string address = getAddress();
 			int port = getPort();
 			serverOpen(&partner, &partnerdata, size, port, address);
 		}
 		else {
-			cout << "Enter your target's port information." << endl;
+			cout << "Enter your target's information." << endl;
 			string address = getAddress();
 			int port = getPort();
 			clinetJoin(&partner, &partnerdata, size, port, address);
@@ -63,28 +64,22 @@ int main() {
 		sockets.fd_count = 1;
 		sockets.fd_array[0] = partner;
 
-
-		int bitsrecved;
-		char data[4096];
-		string mess;
-
-		future<int> ready = async(&sendfunc, sockets);
-		future<int> ready2 = async(&recfunc, sockets);
+		future<int> sending = async(&sendfunc, sockets);
+		future<int> reciving = async(&recfunc, sockets);
 		
 		while (true) {
 			
 			
-			auto status = ready.wait_for(0ms);
+			auto status = sending.wait_for(0ms);
 			if (status==future_status::ready) {
-				ready = async(&sendfunc, sockets);
-
+				sending = async(&sendfunc, sockets);
 			}
 			else {
 				
 			}
-			auto status2 = ready2.wait_for(0ms);
+			auto status2 = reciving.wait_for(0ms);
 			if (status2 == future_status::ready) {
-				ready2 = async(&recfunc, sockets);
+				reciving = async(&recfunc, sockets);
 			}
 			else {
 
@@ -117,13 +112,12 @@ int recfunc(fd_set sockets) {
 	int bitsrecved;
 	
 	ZeroMemory(data, 400);
-	bitsrecved = recv(sockets.fd_array[0], data, 4096, 0);
+	bitsrecved = recv(sockets.fd_array[0], data, 400, 0);
 	if (bitsrecved == 0) {
 		cout << "quitting" << endl;
 		return -1;
 	}
 	else {
-		cout <<'\r';
 		cout << '\r' << ">>" << data << endl << "<<";
 	}
 	return 1;

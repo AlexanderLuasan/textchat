@@ -24,23 +24,18 @@ int serverOpen(SOCKET * ClientSocket, sockaddr_in * client, int size, int port, 
 		return 1;
 	}
 
-	
-
-
 
 	//bind socket
-	sockaddr_in hint;
-	hint.sin_family = AF_INET;
-	hint.sin_port = htons(port);
-	inet_pton(AF_INET, address.c_str(), &(hint.sin_addr.S_un.S_addr));
-	bind(listening, (sockaddr*)&hint, sizeof(hint));
+	sockaddr_in ipport;
+	ipport.sin_family = AF_INET;
+	ipport.sin_port = htons(port);
+	inet_pton(AF_INET, address.c_str(), &(ipport.sin_addr.S_un.S_addr));
+
+
+	bind(listening, (sockaddr*)&ipport, sizeof(ipport));
 
 	cout << "wait for connection" << endl;
 	listen(listening, SOMAXCONN);
-
-
-
-	
 
 	*ClientSocket = accept(listening, (sockaddr*)&client, &size);
 	if (*ClientSocket == INVALID_SOCKET) {
