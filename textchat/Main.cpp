@@ -15,12 +15,16 @@ int main() {
 	bool chating = true;
 	while (chating) {
 		int choice;
-		cout << "server  or client" << endl;
-		if (getUser() == "s") {
+		cout << "server or client" << endl;
+		string in= getUser();
+		if (in.compare("s")==0) {
 			choice = 0;
 		}
-		else {
+		else if (in.compare("c") == 0){
 			choice = 1;
+		}
+		else {
+			continue;
 		}
 
 
@@ -38,22 +42,14 @@ int main() {
 		if (choice == 0) {
 			//collect ports n stuff
 			cout << "Enter your own port information." << endl;
-			int port = getPort();
 			string address = getAddress();
+			int port = getPort();
 			serverOpen(&partner, &partnerdata, size, port, address);
-			if (getnameinfo((sockaddr*)&partnerdata, sizeof(partnerdata), host, NI_MAXHOST, service, NI_MAXSERV, 0) == 0) {
-				cout << host << " connected on port " << service << endl;
-			}
-			else {
-				inet_ntop(AF_INET, &partnerdata.sin_addr, host, NI_MAXHOST);
-				cout << host << " connected on port " << ntohs(partnerdata.sin_port) << endl;
-			}
-
 		}
 		else {
 			cout << "Enter your target's port information." << endl;
-			int port = getPort();
 			string address = getAddress();
+			int port = getPort();
 			clinetJoin(&partner, &partnerdata, size, port, address);
 			if (getnameinfo((sockaddr*)&partnerdata, sizeof(partnerdata), host, NI_MAXHOST, service, NI_MAXSERV, 0) == 0) {
 				cout << host << " connected on port " << service << endl;
