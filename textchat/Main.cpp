@@ -34,7 +34,7 @@ int main() {
 
 		timeval timeout;
 		fd_set sockets;
-		timeout.tv_sec=1;
+		timeout.tv_sec=0;
 		if (choice == 0) {
 			//collect ports n stuff
 			cout << "Enter your own port information." << endl;
@@ -79,9 +79,9 @@ int main() {
 			
 			
 			auto status = ready.wait_for(0ms);
-			
 			if (status==future_status::ready) {
 				ready = async(&sendfunc, sockets);
+
 			}
 			else {
 				
@@ -124,10 +124,11 @@ int recfunc(fd_set sockets) {
 	bitsrecved = recv(sockets.fd_array[0], data, 4096, 0);
 	if (bitsrecved == 0) {
 		cout << "quitting" << endl;
-		exit(1);
+		return -1;
 	}
 	else {
-		cout << endl << ">>" << data << endl;
+		cout <<'\r';
+		cout << '\r' << ">>" << data << endl << "<<";
 	}
 	return 1;
 }
