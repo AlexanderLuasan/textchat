@@ -15,7 +15,7 @@ string getUser()
 
 string getAddress()
 {
-	cout << "enter the adress: " << flush;
+	cout << "enter the address: " << flush;
 	string input = getUser();
 
 	return input;
